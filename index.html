@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Framed" />
+    <meta name="theme-color" content="#000000" />
+    <title>Framed Web</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/icon-180.png" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <section id="start" class="screen active">
+      <div class="start-inner">
+        <img class="logo" src="icons/icon.svg" alt="" width="96" height="96" />
+        <h1>Framed</h1>
+        <p>Richte die Kamera aus – der Frame zeigt dir den besten Ausschnitt.</p>
+        <button id="btn-start" class="primary big">Kamera starten</button>
+        <p id="start-error" class="error" hidden></p>
+        <p class="small muted">Tipp: In Safari über <b>Teilen → Zum Home-Bildschirm</b> wie eine App nutzen.</p>
+      </div>
+    </section>
+
+    <section id="camera" class="screen">
+      <video id="video" playsinline muted autoplay></video>
+      <canvas id="overlay"></canvas>
+      <header class="topbar">
+        <div id="aspects" class="chips"></div>
+        <button id="btn-settings" class="icon" aria-label="Einstellungen">⚙︎</button>
+      </header>
+      <div class="hints">
+        <div id="hint" class="hint"></div>
+        <div id="ai-tip" class="ai-tip" hidden></div>
+      </div>
+      <footer class="bottombar">
+        <div id="zoom" class="chips" hidden></div>
+        <div class="controls">
+          <button id="btn-ai" class="round" aria-label="KI prüfen">KI</button>
+          <button id="btn-shutter" class="shutter" aria-label="Foto aufnehmen"></button>
+          <button id="btn-reset" class="round" aria-label="KI-Frame zurücksetzen" disabled>↺</button>
+        </div>
+        <div id="status" class="status"></div>
+      </footer>
+    </section>
+
+    <section id="edit" class="screen">
+      <div class="preview-wrap"><canvas id="preview"></canvas></div>
+      <div class="edit-panel">
+        <div class="label">Look</div>
+        <div id="looks" class="chips scroll"></div>
+        <div class="label">Rahmen</div>
+        <div id="frames" class="chips scroll"></div>
+        <p id="save-msg" class="small muted"></p>
+        <div class="row">
+          <button id="btn-back" class="secondary">Zurück</button>
+          <button id="btn-save" class="primary">Speichern</button>
+        </div>
+      </div>
+    </section>
+
+    <dialog id="ai-sheet" class="sheet">
+      <h2>KI-Check</h2>
+      <ol class="steps">
+        <li>
+          <button id="btn-ai-send" class="primary">An KI-App senden</button>
+          <p class="small muted">Im Teilen-Menü z. B. <b>Claude</b> wählen. Der Prompt liegt zusätzlich in der Zwischenablage – in der KI-App einfügen, falls er fehlt.</p>
+        </li>
+        <li>
+          <button id="btn-ai-paste" class="primary">Antwort einfügen</button>
+          <p class="small muted">Antwort in der KI-App kopieren, zurückkommen, hier tippen.</p>
+        </li>
+      </ol>
+      <textarea id="ai-text" rows="3" placeholder="…oder Antwort hier hineinkopieren"></textarea>
+      <p id="ai-msg" class="small"></p>
+      <div class="row">
+        <button id="btn-ai-close" class="secondary">Schließen</button>
+        <button id="btn-ai-apply" class="secondary">Übernehmen</button>
+      </div>
+    </dialog>
+
+    <dialog id="settings" class="sheet">
+      <h2>Einstellungen</h2>
+      <label class="toggle"><input type="checkbox" id="set-grid" /> Drittel-Linien anzeigen</label>
+      <h3>Automatischer KI-Check (optional)</h3>
+      <p class="small muted">
+        Mit einem kostenlosen
+        <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Gemini-API-Key</a>
+        prüft die App direkt, ohne Umweg über eine KI-App. Der Key bleibt nur auf diesem Gerät.
+        Hinweis: Im Gratis-Kontingent kann Google Eingaben zur Verbesserung seiner Dienste nutzen.
+      </p>
+      <input id="set-key" type="password" placeholder="Gemini-API-Key (leer = Teilen an KI-App)" autocomplete="off" />
+      <div class="row">
+        <select id="set-model"><option value="">Modell: automatisch</option></select>
+        <button id="btn-models" class="secondary">Modelle laden</button>
+      </div>
+      <p id="set-msg" class="small"></p>
+      <div class="row">
+        <button id="btn-settings-close" class="primary">Fertig</button>
+      </div>
+    </dialog>
+  </body>
+</html>
